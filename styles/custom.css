@@ -162,13 +162,7 @@ body {
 }
 
 /* Button Hover Effects - REMOVED movement, smooth hover only */
-.btn-primary:hover {
-  /* Removed transform effects - no more movement */
-}
 
-.btn-secondary:hover {
-  /* Removed transform effects - no more movement */
-}
 
 /* Floating Quote Button */
 .floating-quote {
@@ -1019,9 +1013,6 @@ footer {
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-.magnetic-btn:hover {
-  /* Removed transform scale - no more movement */
-}
 
 /* Gradient Text */
 .gradient-text {

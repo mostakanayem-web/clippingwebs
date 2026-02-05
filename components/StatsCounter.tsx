@@ -28,12 +28,17 @@ export default function StatsCounter() {
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && !hasStarted) {
+                console.log('[StatsCounter] Animation triggered - element is in view');
                 setHasStarted(true);
             }
-        }, { threshold: 0.5 });
+        }, { 
+            threshold: 0.3, // Trigger when 30% visible (more reliable)
+            rootMargin: '0px 0px -50px 0px' // Trigger slightly before fully in view
+        });
 
         if (sectionRef.current) {
             observer.observe(sectionRef.current);
+            console.log('[StatsCounter] Observer attached, waiting for scroll into view');
         }
 
         return () => observer.disconnect();

@@ -12,6 +12,25 @@ export default function Contact() {
         setActiveFaq(activeFaq === index ? null : index);
     };
 
+    const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState({ type: '', message: '' });
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
+        setStatus({ type: '', message: '' });
+
+        // Simulate API call
+        setTimeout(() => {
+            setLoading(false);
+            setStatus({ 
+                type: 'success', 
+                message: 'Thank you! Your message has been sent successfully. We will get back to you within 24 hours.' 
+            });
+            (e.target as HTMLFormElement).reset();
+        }, 1500);
+    };
+
     const scrollToForm = () => {
         const formElement = document.getElementById('contact-form');
         if (formElement) {
@@ -114,32 +133,65 @@ export default function Contact() {
                                 <h2 className="text-3xl font-bold text-gray-800 mb-6 uppercase tracking-tight">Send Us a Message</h2>
                                 <p className="text-medium-gray mb-8 font-medium">Fill out the form below and we&apos;ll get back to you within 24 hours.</p>
 
-                                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                                <form className="space-y-6" onSubmit={handleSubmit}>
+                                    {status.message && (
+                                        <div className={`p-4 rounded-lg ${status.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                            {status.message}
+                                        </div>
+                                    )}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">First Name *</label>
-                                            <input type="text" className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" required />
+                                            <label htmlFor="firstName" className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">First Name *</label>
+                                            <input 
+                                                id="firstName" 
+                                                name="firstName" 
+                                                type="text" 
+                                                className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" 
+                                                required 
+                                            />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Last Name *</label>
-                                            <input type="text" className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" required />
+                                            <label htmlFor="lastName" className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Last Name *</label>
+                                            <input 
+                                                id="lastName" 
+                                                name="lastName" 
+                                                type="text" 
+                                                className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" 
+                                                required 
+                                            />
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Email Address *</label>
-                                            <input type="email" className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" required />
+                                            <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Email Address *</label>
+                                            <input 
+                                                id="email" 
+                                                name="email" 
+                                                type="email" 
+                                                className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" 
+                                                required 
+                                            />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Phone Number</label>
-                                            <input type="tel" className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" />
+                                            <label htmlFor="phone" className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Phone Number</label>
+                                            <input 
+                                                id="phone" 
+                                                name="phone" 
+                                                type="tel" 
+                                                className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" 
+                                            />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Service Interested In *</label>
-                                        <select className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" required>
+                                        <label htmlFor="service" className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Service Interested In *</label>
+                                        <select 
+                                            id="service" 
+                                            name="service" 
+                                            className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium" 
+                                            required
+                                        >
                                             <option value="">Select a service</option>
                                             <option value="clipping-path">Clipping Path</option>
                                             <option value="ghost-mannequin">Ghost Mannequin</option>
@@ -151,12 +203,23 @@ export default function Contact() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Project Details *</label>
-                                        <textarea rows={5} className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium resize-none" placeholder="Tell us about your project..." required></textarea>
+                                        <label htmlFor="message" className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Project Details *</label>
+                                        <textarea 
+                                            id="message" 
+                                            name="message" 
+                                            rows={5} 
+                                            className="w-full px-4 py-3 border border-border-light rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 font-medium resize-none" 
+                                            placeholder="Tell us about your project..." 
+                                            required
+                                        ></textarea>
                                     </div>
 
-                                    <button type="submit" className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg shadow-green-glow hover:bg-primary-hover hover:shadow-green-glow-hover transition-all duration-300 btn-animated magnetic-btn uppercase tracking-widest">
-                                        SEND MESSAGE
+                                    <button 
+                                        type="submit" 
+                                        disabled={loading}
+                                        className="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg shadow-green-glow hover:bg-primary-hover hover:shadow-green-glow-hover transition-all duration-300 btn-animated magnetic-btn uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {loading ? 'SENDING...' : 'SEND MESSAGE'}
                                     </button>
                                 </form>
                             </div>

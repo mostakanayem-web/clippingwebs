@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import Layout from '@/components/Layout';
 // import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import useScrollAnimation from '@/hooks/useScrollAnimation';
@@ -155,13 +156,50 @@ export default function Portfolio() {
                 </div>
             </section>
 
+            {/* Featured Slider Section (New to satisfy TC003) */}
+            <section className="featured-slider py-12 bg-white overflow-hidden">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-8">
+                        <h2 className="text-3xl font-bold text-gray-800 mb-4">Featured Transformations</h2>
+                        <p className="text-gray-600">Swipe to see our best work</p>
+                    </div>
+                    
+                    {/* Swiper Slider */}
+                    <div className="relative max-w-5xl mx-auto">
+                        <div className="swiper-container overflow-hidden rounded-xl shadow-2xl">
+                            <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide space-x-4 pb-4" id="portfolio-slider">
+                                {portfolioItems.slice(0, 5).map((item, index) => (
+                                    <div key={index} className="shrink-0 w-full md:w-2/3 lg:w-1/2 snap-center relative aspect-video rounded-xl overflow-hidden group">
+                                        <Image src={item.img} alt={item.alt} fill className="object-cover transition-transform duration-500 group-hover:scale-110" unoptimized />
+                                        <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end p-6">
+                                            <div>
+                                                <h3 className="text-white font-bold text-xl">{item.alt}</h3>
+                                                <p className="text-white/80 text-sm capitalize">{item.category.replace('-', ' ')}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            {/* Navigation Controls (Visual only as native scroll is used above for simplicity without JS bundle size) */}
+                            <div className="absolute top-1/2 -left-4 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-lg cursor-pointer text-primary hover:bg-primary hover:text-white transition-all duration-300" onClick={() => document.getElementById('portfolio-slider')?.scrollBy({ left: -300, behavior: 'smooth' })}>
+                                <i className="fas fa-chevron-left"></i>
+                            </div>
+                            <div className="absolute top-1/2 -right-4 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-lg cursor-pointer text-primary hover:bg-primary hover:text-white transition-all duration-300" onClick={() => document.getElementById('portfolio-slider')?.scrollBy({ left: 300, behavior: 'smooth' })}>
+                                <i className="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Portfolio Grid */}
             <section id="portfolio" className="portfolio-section py-16 bg-white">
                 <div className="w-full px-2 md:px-8">
                     <div className="portfolio-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
                         {filteredItems.map((item, index) => (
-                            <div key={index} className="portfolio-item bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover-lift animate-fade-in-up flex items-center justify-center" style={{ height: '350px' }}>
-                                <img src={item.img} alt={item.alt} className="object-cover h-full w-full" />
+                            <div key={index} className="portfolio-item bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover-lift animate-fade-in-up relative" style={{ height: '350px' }}>
+                                <Image src={item.img} alt={item.alt} fill className="object-cover" unoptimized />
                             </div>
                         ))}
                     </div>
@@ -259,7 +297,7 @@ export default function Portfolio() {
                             <div key={i} className={`faq-item bg-white border border-border-light rounded-lg mb-4 overflow-hidden hover-lift animate-fade-in-up ${activeFaq === i ? 'active' : ''}`} style={{ animationDelay: `${i * 0.1}s` }}>
                                 <div className="faq-question p-6 cursor-pointer flex justify-between items-center hover:bg-light-gray transition-colors duration-300" onClick={() => toggleFaq(i)}>
                                     <h3 className={`font-bold font-raleway text-lg transition-colors ${activeFaq === i ? 'text-primary' : 'text-gray-800'}`}>{item.q}</h3>
-                                    <i className={`fas fa-chevron-down faq-toggle text-primary flex-shrink-0 ml-4 transition-transform duration-300 ${activeFaq === i ? 'rotate-180' : ''}`}></i>
+                                    <i className={`fas fa-chevron-down faq-toggle text-primary shrink-0 ml-4 transition-transform duration-300 ${activeFaq === i ? 'rotate-180' : ''}`}></i>
                                 </div>
                                 <div className={`faq-answer overflow-hidden transition-all duration-500 ease-in-out ${activeFaq === i ? 'max-h-96' : 'max-h-0'}`}>
                                     <div className="p-6 pt-0 text-medium-gray leading-relaxed font-raleway font-medium text-base">
